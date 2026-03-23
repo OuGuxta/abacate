@@ -1,70 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Aventura com Voltar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Sombra do Corvo Negro</title>
   <style>
-    .cena { padding: 20px; font-family: Arial; }
-    .opcoes button { margin: 10px; padding: 12px 20px; font-size: 16px; }
-    .btn-voltar { background: #e74c3c; color: white; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #0f001a, #1a0033);
+      color: #e0d4ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Fundo com leve efeito de partículas ou névoa (opcional) */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(120, 60, 200, 0.12), transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .capa {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 30px;
+      max-width: 90%;
+    }
+
+    .titulo {
+      font-size: clamp(3.2rem, 9vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-shadow: 0 0 30px rgba(180, 100, 255, 0.7),
+                   0 0 60px rgba(140, 60, 220, 0.4);
+      margin-bottom: 0.4em;
+      color: #d4b3ff;
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+
+    .subtitulo {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      opacity: 0.9;
+      margin-bottom: 3rem;
+      letter-spacing: 1.5px;
+      font-style: italic;
+    }
+
+    .btn-iniciar {
+      display: inline-block;
+      padding: 18px 60px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #7b2cbf, #4a148c);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(120, 60, 200, 0.5);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-iniciar:hover {
+      transform: translateY(-6px) scale(1.08);
+      box-shadow: 0 20px 50px rgba(120, 60, 200, 0.7);
+      background: linear-gradient(135deg, #9d4edd, #6a1b9a);
+    }
+
+    .btn-iniciar:active {
+      transform: translateY(-2px);
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(180,100,255,0.5); }
+      to   { text-shadow: 0 0 40px rgba(180,100,255,0.9), 0 0 80px rgba(140,60,220,0.6); }
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+
+    @media (max-height: 500px) {
+      .titulo { font-size: 3.5rem; }
+      .subtitulo { font-size: 1.2rem; margin-bottom: 1.5rem; }
+      .btn-iniciar { padding: 14px 40px; font-size: 1.3rem; }
+    }
   </style>
 </head>
 <body>
 
-<div id="cena" class="cena">
-  <h2 id="titulo">Início</h2>
-  <p id="texto">Você está na praça da vila.</p>
-  
-  <div class="opcoes">
-    <button class="btn-avancar" data-proximo="floresta">Ir para a floresta</button>
-    <button class="btn-voltar" data-voltar="inicio">← Voltar (exemplo)</button>
+  <div class="capa">
+    <h1 class="titulo">A Sombra do Corvo Negro</h1>
+    <p class="subtitulo">Uma aventura sombria nas terras esquecidas de Eldrath</p>
+    
+    <button class="btn-iniciar" id="iniciar">Iniciar Jornada</button>
   </div>
-</div>
 
-<script>
-  const historico = ["inicio"];
+  <footer>© 2026 – Gustavo • Uma aventura feita com HTML, CSS e JavaScript</footer>
 
-  function mostrarCena(id) {
-    const cena = cenas[id];
-    if (!cena) return;
-    
-    document.getElementById("titulo").textContent = cena.titulo;
-    document.getElementById("texto").textContent = cena.texto;
-    
-    // Aqui você pode recriar os botões dinamicamente ou apenas mostrar/esconder
-    historico.push(id);
-  }
+  <script>
+    document.getElementById("iniciar").addEventListener("click", function() {
+      // Opção 1: esconde a capa e mostra o jogo (mais comum)
+      document.querySelector(".capa").style.display = "none";
+      
+      // Opção 2: redireciona para outra página (se o jogo estiver em index.html e capa em capa.html)
+      // window.location.href = "jogo.html";
 
-  // Suas cenas (exemplo)
-  const cenas = {
-    "inicio": {
-      titulo: "Início",
-      texto: "Você está na praça da vila."
-    },
-    "floresta": {
-      titulo: "Floresta Escura",
-      texto: "Você entrou na floresta. Está muito escuro."
-    }
-  };
+      // Opção 3: carrega a primeira cena diretamente (se tudo estiver na mesma página)
+      // mostrarCena("introducao");   // ← chame sua função de mostrar cena aqui
+    });
+  </script>
 
-  // Listener dos botões de AVANÇAR
-  document.addEventListener('click', e => {
-    if (e.target.classList.contains('btn-avancar')) {
-      const proximo = e.target.dataset.proximo;
-      if (proximo) mostrarCena(proximo);
-    }
-    
-    if (e.target.classList.contains('btn-voltar')) {
-      const voltarPara = e.target.dataset.voltar;
-      if (voltarPara && cenas[voltarPara]) {
-        mostrarCena(voltarPara);
-        if (historico.length > 1) historico.pop();
-      } else if (historico.length >= 2) {
-        historico.pop(); // remove atual
-        mostrarCena(historico[historico.length - 1]);
-      }
-    }
-  });
-</script>
 </body>
 </html>
