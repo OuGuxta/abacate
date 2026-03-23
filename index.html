@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Aventura com Voltar</title>
+  <style>
+    .cena { padding: 20px; font-family: Arial; }
+    .opcoes button { margin: 10px; padding: 12px 20px; font-size: 16px; }
+    .btn-voltar { background: #e74c3c; color: white; }
+  </style>
+</head>
+<body>
+
+<div id="cena" class="cena">
+  <h2 id="titulo">Início</h2>
+  <p id="texto">Você está na praça da vila.</p>
+  
+  <div class="opcoes">
+    <button class="btn-avancar" data-proximo="floresta">Ir para a floresta</button>
+    <button class="btn-voltar" data-voltar="inicio">← Voltar (exemplo)</button>
+  </div>
+</div>
+
+<script>
+  const historico = ["inicio"];
+
+  function mostrarCena(id) {
+    const cena = cenas[id];
+    if (!cena) return;
+    
+    document.getElementById("titulo").textContent = cena.titulo;
+    document.getElementById("texto").textContent = cena.texto;
+    
+    // Aqui você pode recriar os botões dinamicamente ou apenas mostrar/esconder
+    historico.push(id);
+  }
+
+  // Suas cenas (exemplo)
+  const cenas = {
+    "inicio": {
+      titulo: "Início",
+      texto: "Você está na praça da vila."
+    },
+    "floresta": {
+      titulo: "Floresta Escura",
+      texto: "Você entrou na floresta. Está muito escuro."
+    }
+  };
+
+  // Listener dos botões de AVANÇAR
+  document.addEventListener('click', e => {
+    if (e.target.classList.contains('btn-avancar')) {
+      const proximo = e.target.dataset.proximo;
+      if (proximo) mostrarCena(proximo);
+    }
+    
+    if (e.target.classList.contains('btn-voltar')) {
+      const voltarPara = e.target.dataset.voltar;
+      if (voltarPara && cenas[voltarPara]) {
+        mostrarCena(voltarPara);
+        if (historico.length > 1) historico.pop();
+      } else if (historico.length >= 2) {
+        historico.pop(); // remove atual
+        mostrarCena(historico[historico.length - 1]);
+      }
+    }
+  });
+</script>
+</body>
+</html>
